@@ -3,6 +3,9 @@
 import tkinter as tk
 from tkinter.scrolledtext import ScrolledText as st
 from tkinter import messagebox as mb
+from tkinter import filedialog as fd
+import os
+import pandas as pd
 
 # Создание главного окна
 window=tk.Tk()
@@ -39,10 +42,17 @@ def do_dialog():
     return name 
     
 
-
-
+# Обработчик нажатия кнопки
+def process_button():
+    file_name = do_dialog()
+    label_01['text'] = file_name
+    lst = get_column(df, 0)
+    for item in lst:
+        output_text.insert(tk.END, str(item) + os.linesep)
+    mb.showinfo(title=None, message="Готово")
+    
 # Создание кнопки
-button=tk.Button(window, text="Прочитать файл")
+button=tk.Button(window, text="Прочитать файл", command=process_button)
 button.grid(row=4, column=1)
 
 
