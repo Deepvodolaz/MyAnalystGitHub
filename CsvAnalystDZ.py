@@ -1,5 +1,4 @@
 
-
 import tkinter as tk
 from tkinter.scrolledtext import ScrolledText as st
 from tkinter import messagebox as mb
@@ -9,30 +8,30 @@ import pandas as pd
 
 # Создание главного окна
 window=tk.Tk()
-window.geometry("550x550")
+window.geometry("800x650")
 window.title("Программа обработки .csv файлов")
 
 # Создание меток вывода
 label_00 = tk.Label(text = "Файл:")
-label_00.grid(row=0, column=0, padx=10, pady=10, sticky="e")
+label_00.grid(row=0, column=0, padx=15, pady=15, sticky="e")
 
 label_01 = tk.Label(text = "")
 label_01.grid(row=0, column=1, sticky="w")
 
 label_10 = tk.Label(text = "Строк:")
-label_10.grid(row=1, column=0, padx=10, pady=10, sticky="e")
+label_10.grid(row=1, column=0, padx=15, pady=15, sticky="e")
 
 label_11 = tk.Label(text = "")
 label_11.grid(row=1, column=1, sticky="w")
 
 label_20 = tk.Label(text = "Столбцов:")
-label_20.grid(row=2, column=0, padx=10, pady=10, sticky="e")
+label_20.grid(row=2, column=0, padx=15, pady=15, sticky="e")
 
 label_21 = tk.Label(text = "")
 label_21.grid(row=2, column=1, sticky="w")
 
 # Создание текстового вывода с прокруткой
-output_text = st(height = 22, width = 50)
+output_text = st(height = 25, width = 70)
 output_text.grid(row=3, column=1, padx=10, pady=10, sticky="w")
 
 # Диалог открытия файла
@@ -40,12 +39,21 @@ def do_dialog():
     my_dir = os.getcwd()
     name= fd.askopenfilename(initialdir=my_dir)
     return name 
-    
+
+# Обработка csv файла при помощи pandas
+def pandas_read_csv(file_name):
+    df = pd.read_csv(file_name, header=None, sep=';')
+    cnt_rows = df.shape[0]
+    cnt_columns = df.shape[1]
+    label_11['text'] = cnt_rows
+    label_21['text'] = cnt_columns
+    return df    
 
 # Обработчик нажатия кнопки
 def process_button():
     file_name = do_dialog()
     label_01['text'] = file_name
+    df = pandas_read_csv(file_name)
     lst = get_column(df, 0)
     for item in lst:
         output_text.insert(tk.END, str(item) + os.linesep)
